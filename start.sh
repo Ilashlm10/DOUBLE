@@ -4,7 +4,7 @@ then
   git clone https://github.com/matrixbotz0/aEvaMaria /aEvaMaria
 else
   echo "Cloning Custom Repo from $UPSTREAM_REPO "
-  git clone $UPSTREAM_REPO /EvaMaria
+  git clone $UPSTREAM_REPO /aEvaMaria
 fi
 cd /EvaMaria
 pip3 install -U -r requirements.txt
