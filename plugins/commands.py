@@ -52,13 +52,14 @@ async def start(client, message):
             InlineKeyboardButton('😊 𝙰𝚋𝚘𝚞𝚝', callback_data='about')
         ]]
         reply_markup = InlineKeyboardMarkup(buttons)
-        await message.reply_photo("start")
-        await message.reply_text("START_TXT")
-            caption=script.START_TXT.format(message.from_user.mention, temp.U_NAME, temp.B_NAME),
-            reply_markup=reply_markup,
-            parse_mode=enums.ParseMode.HTML
+        await_message.reply_photo(photo="photo, url,",)
+        await message.reply_text(
+             text="script.START_TXT.format(message.from_user.mention, temp.U_NAME, temp.B_NAME)"
+             reply_markup="reply_markup"
+             parse_mode="enums.ParseMode.HTML"
         )
         return
+        
 
     kk, file_id = message.command[1].split("_", 1) if "_" in message.command[1] else (False, False)
     pre = ('checksubp' if kk == 'filep' else 'checksub') if kk else False
