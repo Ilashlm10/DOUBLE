@@ -83,11 +83,11 @@ async def start(client, message):
             InlineKeyboardButton('😊 𝙰𝚋𝚘𝚞𝚝', callback_data='about')
         ]]
         reply_markup = InlineKeyboardMarkup(buttons)
-        await message.reply_photo(
-            photo=random.choice(PICS),
-            caption=script.START_TXT.format(message.from_user.mention, temp.U_NAME, temp.B_NAME),
-            reply_markup=reply_markup,
-            parse_mode=enums.ParseMode.HTML
+        await message.reply_photo(photo=random.choice(PICS))
+        await message.reply_text(
+             caption=script.START_TXT.format(message.from_user.mention, temp.U_NAME, temp.B_NAME),
+             reply_markup=reply_markup,
+             parse_mode=enums.ParseMode.HTML
         )
         return
     data = message.command[1]
