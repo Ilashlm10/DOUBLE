@@ -1,12 +1,11 @@
 import motor.motor_asyncio
-from info import DB2
-from info import DATABASE_NAME, DATABASE_NAME2, DATABASE_URI, DATABASE_URI2, IMDB, IMDB_TEMPLATE, MELCOW_NEW_USERS, P_TTI_SHOW_OFF, SINGLE_BUTTON, SPELL_CHECK_REPLY, PROTECT_CONTENT
+from info import DATABASE_NAME, DATABASE_URI, IMDB, IMDB_TEMPLATE, MELCOW_NEW_USERS, P_TTI_SHOW_OFF, SINGLE_BUTTON, SPELL_CHECK_REPLY, PROTECT_CONTENT
 
 class Database:
     
-    def __init__(self, uri, uri2, database_name, database_name2):
-        self._client = motor.motor_asyncio.AsyncIOMotorClient(uri, uri2)
-        self.db = self._client[database_name, database_name2]
+    def __init__(self, uri, database_name):
+        self._client = motor.motor_asyncio.AsyncIOMotorClient(uri)
+        self.db = self._client[database_name]
         self.col = self.db.users
         self.grp = self.db.groups
 
