@@ -30,7 +30,6 @@ auth_grp = environ.get('AUTH_GROUP')
 AUTH_GROUPS = [int(ch) for ch in auth_grp.split()] if auth_grp else None
 
 # MongoDB information
-DB2 = enivorn.get('DB2', "True") #set this to false if you don't want to use double db 
 DATABASE_URI = environ.get('DATABASE_URI', "mongodb+srv://D:D@cluster0.eejhnrj.mongodb.net/?retryWrites=true&w=majority")
 DATABASE_URI2 = environ.get('DATABASE_URI2', "mongodb+srv://db2:db2@cluster0.t2fhair.mongodb.net/?retryWrites=true&w=majority") 
 DATABASE_NAME = environ.get('DATABASE_NAME', "D:<D>")
