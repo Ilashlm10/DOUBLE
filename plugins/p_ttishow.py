@@ -152,6 +152,16 @@ async def get_ststs(bot, message):
     free = get_size(free)
     await rju.edit(script.STATUS_TXT.format(files, total_users, totl_chats, size, free))
 
+@Client.on_message(filters.command('stats2') & filters.incoming)
+async def get_ststs(bot, message):
+    rju = await message.reply('Fetching 2db stats..')
+    files = await Media.count_documents()
+    size = await db.get_db_size()
+    free = 536870912 - size
+    size = get_size(size)
+    free = get_size(free)
+    await rju.edit(script.STATUS_TXT2.format(files, size, free))
+
 
 # a function for trespassing into others groups, Inspired by a Vazha
 # Not to be used , But Just to showcase his vazhatharam.
