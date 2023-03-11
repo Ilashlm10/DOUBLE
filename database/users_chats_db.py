@@ -9,7 +9,10 @@ class Database:
         self.db = self._client[database_name]
         self.db2 = self._client2[database_name2]
         self.col = self.db.users
+        self.col = self.db2.users
         self.grp = self.db.groups
+        self.grp = self.db2.groups
+
 
 
     def new_user(self, id, name):
