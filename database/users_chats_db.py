@@ -5,7 +5,7 @@ class Database:
     
     def __init__(self, uri, uri2, database_name, database_name2):
         self._client = motor.motor_asyncio.AsyncIOMotorClient(uri)
-        self._client2 = motor.motor_asyncio.AsyncIOMotorClient(uri2)
+        self._client2 = motor.motor_asyncio.AsyncIOMotorClient2(uri2)
         self.db = self._client[database_name]
         self.db2 = self._client2[database_name2]
         self.col = self.db.users
