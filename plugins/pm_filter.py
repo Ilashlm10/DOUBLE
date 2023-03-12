@@ -544,31 +544,17 @@ async def cb_handler(client: Client, query: CallbackQuery):
             InlineKeyboardButton('♻️ 𝚁𝙴𝙵𝚁𝙴𝚂𝙷', callback_data='rfrsh')
         ]]
         reply_markup = InlineKeyboardMarkup(buttons)
-        total = await Media.count_documents()
+        total = await Media.count_documents(
         users = await db.total_users_count()
         chats = await db.total_chat_count()
         monsize = await db.get_db_size()
+        total = await db2.Media.count_documents()
+        monsize = await db2.get_db_size()
         free = 536870912 - monsize
         monsize = get_size(monsize)
         free = get_size(free)
         await query.message.edit_text(
             text=script.STATUS_TXT.format(total, users, chats, monsize, free),
-            reply_markup=reply_markup,
-            parse_mode=enums.ParseMode.HTML
-        )
-    elif query.data == "stats2":
-        buttons = [[
-            InlineKeyboardButton('👩‍🦯 𝙱𝙰𝙲𝙺', callback_data='help'),
-            InlineKeyboardButton('♻️ 𝚁𝙴𝙵𝚁𝙴𝚂𝙷', callback_data='rfrsh')
-        ]]
-        reply_markup = InlineKeyboardMarkup(buttons)
-        total = await db2.Media.count_documents()
-        monsize = await db2.get_db2_size()
-        free = 536870912 - monsize
-        monsize = get_size(monsize)
-        free = get_size(free)
-        await query.message.edit_text(
-            text=script.STATUS_TXT2.format(total, monsize, free),
             reply_markup=reply_markup,
             parse_mode=enums.ParseMode.HTML
         )
