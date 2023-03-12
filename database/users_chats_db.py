@@ -1,5 +1,5 @@
 import motor.motor_asyncio
-from info import DATABASE_NAME, DATABASE_URI, IMDB, IMDB_TEMPLATE, MELCOW_NEW_USERS, P_TTI_SHOW_OFF, SINGLE_BUTTON, SPELL_CHECK_REPLY, PROTECT_CONTENT
+from info import DATABASE_NAME, DATABASE_NAME2, DATABASE_URI, DATABASE_URI2, IMDB, IMDB_TEMPLATE, MELCOW_NEW_USERS, P_TTI_SHOW_OFF, SINGLE_BUTTON, SPELL_CHECK_REPLY, PROTECT_CONTENT
 
 class Database:
     
@@ -146,4 +146,5 @@ class Database:
     async def get_db_size(self):
         return (await self.db.command("dbstats"))['dataSize']
 
-db = Database(DATABASE_URI, DATABASE_NAME)
+db = Database('DATABASE_URI, DATABASE_NAME')
+db2 = Database('DATABASE_URI2, DATABASE_NAME2')
