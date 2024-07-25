@@ -373,7 +373,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         try:
             if AUTH_CHANNEL and not await is_subscribed(client, query):
                 await query.answer(url=f"https://t.me/{temp.U_NAME}?start={ident}_{file_id}")
-                await client.send_message(
+                await client.send_message
             chat_id=message.from_user.id,
             text="**THX FOR REQUEST**",
             reply_markup=InlineKeyboardMarkup(btn),
@@ -390,7 +390,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
                     protect_content=True if ident == "filep" else False 
                 )
                 await query.answer('Check PM, I have sent files in pm', show_alert=True)
-                await client.send_message(
+                await client.send_message
             chat_id=message.from_user.id,
             text="**THX FOR REQUEST**",
             reply_markup=InlineKeyboardMarkup(btn),
