@@ -378,20 +378,13 @@ async def cb_handler(client: Client, query: CallbackQuery):
                 await query.answer(url=f"https://t.me/{temp.U_NAME}?start={ident}_{file_id}")
                 return
             else:
-                await client.send_cached_media (
+                await client.send_cached_media(
                     chat_id=query.from_user.id,
                     file_id=file_id,
                     caption=f_caption,
                     protect_content=True if ident == "filep" else False,
-                await message.reply_text("Successfully disconnected from this chat", quote=True)
-                await query.answer('Check PM, I have sent files in pm', show_alert=True)
-                return 
-                await client.send_message(
-            chat_id=message.from_user.id,
-            text="**THX FOR REQUEST**",
-            parse_mode=enums.ParseMode.MARKDOWN
                 )
-                await query.answer('𝙿𝙻𝙴𝙰𝚂𝙴 𝚂𝙷𝙰𝚁𝙴 𝙰𝙽𝙳 𝚂𝚄𝙿𝙿𝙾𝚁𝚃')
+                await query.answer('Check PM, I have sent files in pm', show_alert=True)
         except UserIsBlocked:
             await query.answer('You Are Blocked to use me !', show_alert=True)
         except PeerIdInvalid:
