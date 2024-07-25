@@ -379,7 +379,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
             text="**THX FOR REQUEST**",
             reply_markup=InlineKeyboardMarkup(btn),
             parse_mode=enums.ParseMode.MARKDOWN
-            )
+            ),
     elif settings['botpm']:
                 await query.answer(url=f"https://t.me/{temp.U_NAME}?start={ident}_{file_id}")
                 return
