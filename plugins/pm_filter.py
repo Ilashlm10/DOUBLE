@@ -386,7 +386,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
                 )
                 await query.answer('Check PM, I have sent files in pm', show_alert=True)
                 return 
-                await client.send_message
+                await client.send_message(
             chat_id=message.from_user.id,
             text="**THX FOR REQUEST**",
             parse_mode=enums.ParseMode.MARKDOWN
