@@ -9,6 +9,7 @@ from Script import script
 from pyrogram.errors import ChatAdminRequired
 
 """-----------------------------------------https://t.me/GetTGLink/4179 --------------------------------------"""
+ACCEPTED_TEXT = "Hey {user}\n\nYour Request For {chat} Is Accepted ✅"
 
 @Client.on_message(filters.new_chat_members & filters.group)
 async def save_group(bot, message):
