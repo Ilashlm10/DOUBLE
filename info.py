@@ -12,9 +12,9 @@ def is_enabled(value, default):
 
 # Bot information
 SESSION = environ.get('SESSION', 'Media_search')
-API_ID = int(environ.get('API_ID', '11615722'))
-API_HASH = environ.get('API_HASH', 'c992746520e8886d3330de2ec9a1a3a7')
-BOT_TOKEN = environ.get('BOT_TOKEN', "5687114840:AAGdDN0GHnXqQ7FU1Tq_uDRUGl_-7J3h_oE")
+API_ID = int(environ.get('API_ID', ''))
+API_HASH = environ.get('API_HASH', '')
+BOT_TOKEN = environ.get('BOT_TOKEN', "")
 
 # Bot settings
 CACHE_TIME = int(environ.get('CACHE_TIME', 300))
@@ -30,15 +30,15 @@ auth_grp = environ.get('AUTH_GROUP')
 AUTH_GROUPS = [int(ch) for ch in auth_grp.split()] if auth_grp else None
 
 # MongoDB information
-DATABASE_URI = environ.get('DATABASE_URI', "mongodb+srv://D:D@cluster0.eejhnrj.mongodb.net/?retryWrites=true&w=majority")
-DATABASE_URI2 = environ.get('DATABASE_URI2', "mongodb+srv://db2:db2@cluster0.t2fhair.mongodb.net/?retryWrites=true&w=majority") 
-DATABASE_NAME = environ.get('DATABASE_NAME', "D:<D>")
-DATABASE_NAME2 = environ.get('DATABASE_NAME2', "Cluster0")
+DATABASE_URI = environ.get('DATABASE_URI', "")
+DATABASE_URI2 = environ.get('DATABASE_URI2', "") 
+DATABASE_NAME = environ.get('DATABASE_NAME', "")
+DATABASE_NAME2 = environ.get('DATABASE_NAME2', "")
 COLLECTION_NAME = environ.get('COLLECTION_NAME', 'Telegram_files')
 
 # Others
-LOG_CHANNEL = int(environ.get('LOG_CHANNEL', '-1001519154024'))
-SUPPORT_CHAT = environ.get('SUPPORT_CHAT', 'MLZ_BOTZ_support')
+LOG_CHANNEL = int(environ.get('LOG_CHANNEL', ''))
+SUPPORT_CHAT = environ.get('SUPPORT_CHAT', '')
 P_TTI_SHOW_OFF = is_enabled((environ.get('P_TTI_SHOW_OFF', "True")), True)
 IMDB = is_enabled((environ.get('IMDB', "True")), True)
 SINGLE_BUTTON = is_enabled((environ.get('SINGLE_BUTTON', "True")), False)
@@ -58,7 +58,7 @@ PUBLIC_FILE_STORE = is_enabled((environ.get('PUBLIC_FILE_STORE', "False")), True
 auth_channel = environ.get('AUTH_CHANNEL')
 AUTH_CHANNEL = int(auth_channel) if auth_channel and id_pattern.search(auth_channel) else None
 # Set to False inside the bracket if you don't want to use Request Channel else set it to Channel ID
-REQ_CHANNEL = environ.get("REQ_CHANNEL", "-1001894036444")
+REQ_CHANNEL = environ.get("REQ_CHANNEL", "")
 REQ_CHANNEL = int(REQ_CHANNEL) if REQ_CHANNEL and id_pattern.search(REQ_CHANNEL) else False
 JOIN_REQS_DB = environ.get("JOIN_REQS_DB", DATABASE_URI)
 
