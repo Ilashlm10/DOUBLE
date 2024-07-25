@@ -17,6 +17,7 @@ from info import SESSION, API_ID, API_HASH, BOT_TOKEN, LOG_STR, PORT, LOG_CHANNE
 from utils import temp
 from typing import Union, Optional, AsyncGenerator
 from pyrogram import types
+from Script import script
 from datetime import date, datetime 
 import pytz
 
