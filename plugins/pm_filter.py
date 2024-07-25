@@ -382,7 +382,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
                     chat_id=query.from_user.id,
                     file_id=file_id,
                     caption=f_caption,
-                    protect_content=True if ident == "filep" else False 
+                    protect_content=True if ident == "filep" else False,
                 await message.reply_text("Successfully disconnected from this chat", quote=True)
                 )
                 await query.answer('Check PM, I have sent files in pm', show_alert=True)
