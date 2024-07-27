@@ -11,7 +11,7 @@ def is_enabled(value, default):
         return default
 
 class script(object):
-    START_TXT = environ.get("START_TXT", """<b>Hᴇʏ {},
+    START_TXT = """<b>Hᴇʏ {},
 
 𝗜𝗮𝗺 𝗔𝗻 𝗔𝘄𝗲𝘀𝗼𝗺𝗲 𝗔𝘂𝘁𝗼 𝗙𝗶𝗹𝘁𝗲𝗿 + 𝗠𝗼𝘃𝗶𝗲 𝗦𝗲𝗮𝗿𝗰𝗵 + 𝗠𝗮𝗻𝘂𝗮𝗹 𝗙𝗶𝗹𝘁𝗲𝗿 𝗕𝗼𝘁.
 
