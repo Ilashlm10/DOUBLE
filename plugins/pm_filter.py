@@ -742,6 +742,8 @@ async def auto_filter(client, msg, spoll=False):
 🌏 Country ➠ {countries}
 🔉 Language ➠ {languages}
 ⚙️ Votes ➠ {votes}</blockquote>
+
+<i>**®️ {message.chat.title}**</i>"""
     if imdb and imdb.get('poster'):
         try:
             hehe =  await message.reply_photo(photo=imdb.get('poster'), caption=cap[:1024],
