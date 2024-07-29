@@ -16,4 +16,3 @@ aiohttp
 datetime
 pyrofork 
 python-dotenv
-dnspython
