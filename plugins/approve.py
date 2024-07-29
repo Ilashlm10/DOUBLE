@@ -8,7 +8,7 @@ import asyncio, datetime, time
 
 ACCEPTED_TEXT = "Hey {user}\n\nYour Request For {chat} Is Accepted ✅"
 
-@Bot.on_chat_join_request()
+@Client.on_chat_join_request()
 async def req_accept(c, m):
     user_id = m.from_user.id
     chat_id = m.chat.id
