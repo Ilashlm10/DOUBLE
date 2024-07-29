@@ -7,41 +7,14 @@ logging.getLogger().setLevel(logging.INFO)
 logging.getLogger("pyrogram").setLevel(logging.ERROR)
 logging.getLogger("imdbpy").setLevel(logging.ERROR)
 
-import os 
-import sys
-from dotenv import load_dotenv
-
-load_dotenv("./dynamic.env", override=True, encoding="utf-8")
-
-from pyrogram import idle
 from pyrogram import Client, __version__
 from pyrogram.raw.all import layer
 from database.ia_filterdb import Media2, Media3, Media4, Media5
 from database.users_chats_db import db
-from database.join_reqs import JoinReqs
-from info import *
+from info import SESSION, API_ID, API_HASH, BOT_TOKEN, LOG_STR
 from utils import temp
-from datetime import date, datetime 
-import pytz
 from typing import Union, Optional, AsyncGenerator
 from pyrogram import types
-
-from aiohttp import web
-from plugins import web_server
-from plugins.index import index_files_to_db, incol
-PORT = environ.get("PORT", "8080")
-name = "main"
-
-async def restart_index(bot):
-    progress_document = incol.find_one({"_id": "index_progress"})
-    if progress_document:
-        last_indexed_file = progress_document.get("last_indexed_file", 0)
-        last_msg_id = progress_document.get("last_msg_id")
-        chat_id = progress_document.get("chat_id")           
-        temp.CURRENT = int(last_indexed_file)
-        msg = await bot.send_message(chat_id=int(LOG_CHANNEL), text="Restarting Index...")
-        await index_files_to_db(last_msg_id, chat_id, msg, bot)                    
-
 
 class Bot(Client):
 
@@ -60,18 +33,8 @@ class Bot(Client):
         b_users, b_chats = await db.get_banned()
         temp.BANNED_USERS = b_users
         temp.BANNED_CHATS = b_chats
-        await super().start()        
-        if REQ_CHANNEL == None:
-            with open("./dynamic.env", "wt+") as f:
-                req = await JoinReqs().get_fsub_chat()
-                if req is None:
-                    req = False
-                else:
-                    req = req['chat_id']
-                f.write(f"REQ_CHANNEL={req}\n")
-            logging.info("Loading REQ_CHANNEL from database...")
-            os.execl(sys.executable, sys.executable, "bot.py")
-            return        
+        await super().start()
+        await Media.ensure_indexes()
         me = await self.get_me()
         temp.ME = me.id
         temp.U_NAME = me.username
@@ -79,24 +42,7 @@ class Bot(Client):
         self.username = '@' + me.username
         logging.info(f"{me.first_name} with for Pyrogram v{__version__} (Layer {layer}) started on {me.username}.")
         logging.info(LOG_STR)
-        tz = pytz.timezone('Asia/Kolkata')
-        today = date.today()
-        now = datetime.now(tz)
-        time = now.strftime("%H:%M:%S %p")
-        await self.send_message(chat_id=LOG_CHANNEL, text=script.RESTART_TXT.format(today, time))
-        app = web.AppRunner(await web_server())
-        await app.setup()
-        bind_address = "0.0.0.0"
-        await web.TCPSite(app, bind_address, PORT).start()
 
-
-        app = web.AppRunner(await web_server())
-        await app.setup()
-        bind_address = "0.0.0.0"
-        await web.TCPSite(app, bind_address, PORT).start()       
-
-        await restart_index(self)
-    
     async def stop(self, *args):
         await super().stop()
         logging.info("Bot stopped. Bye.")
@@ -140,7 +86,6 @@ class Bot(Client):
                 yield message
                 current += 1
 
-if name == "main":
-    app = Bot()
-    app.run()
-    
+
+app = Bot()
+app.run()
