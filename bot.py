@@ -11,6 +11,7 @@ from pyrogram import Client, __version__
 from pyrogram.raw.all import layer
 from database.ia_filterdb import Media2, Media3, Media4, Media5
 from database.users_chats_db import db
+from database.join_reqs import JoinReqs
 from info import SESSION, API_ID, API_HASH, BOT_TOKEN, LOG_STR
 from utils import temp
 from datetime import date, datetime 
@@ -35,8 +36,18 @@ class Bot(Client):
         b_users, b_chats = await db.get_banned()
         temp.BANNED_USERS = b_users
         temp.BANNED_CHATS = b_chats
-        await super().start()
-        await Media.ensure_indexes()
+        await super().start()        
+        if REQ_CHANNEL == None:
+            with open("./dynamic.env", "wt+") as f:
+                req = await JoinReqs().get_fsub_chat()
+                if req is None:
+                    req = False
+                else:
+                    req = req['chat_id']
+                f.write(f"REQ_CHANNEL={req}\n")
+            logging.info("Loading REQ_CHANNEL from database...")
+            os.execl(sys.executable, sys.executable, "bot.py")
+            return        )
         me = await self.get_me()
         temp.ME = me.id
         temp.U_NAME = me.username
