@@ -34,29 +34,38 @@ class Bot(Client):
             sleep_threshold=5,
         )
 
-    async def start(self):
+    asyncasync def start(self):
         b_users, b_chats = await db.get_banned()
         temp.BANNED_USERS = b_users
         temp.BANNED_CHATS = b_chats
-        await super().start()
-        await Media.ensure_indexes()
+        await super().start()        
+        if REQ_CHANNEL == None:
+            with open("./dynamic.env", "wt+") as f:
+                req = await JoinReqs().get_fsub_chat()
+                if req is None:
+                    req = False
+                else:
+                    req = req['chat_id']
+                f.write(f"REQ_CHANNEL={req}\n")
+            logging.info("Loading REQ_CHANNEL from database...")
+            os.execl(sys.executable, sys.executable, "bot.py")
+            return        
         me = await self.get_me()
         temp.ME = me.id
         temp.U_NAME = me.username
         temp.B_NAME = me.first_name
         self.username = '@' + me.username
         logging.info(f"{me.first_name} with for Pyrogram v{__version__} (Layer {layer}) started on {me.username}.")
-        logging.info(LOG_STR)
-        tz = pytz.timezone('Asia/Kolkata')
-        today = date.today()
-        now = datetime.now(tz)
-        time = now.strftime("%H:%M:%S %p")
-        await self.send_message(chat_id=LOG_CHANNEL, text=script.RESTART_TXT.format(today, time))
+        #logging.info(LOG_STR)
+        await self.send_message(chat_id=LOG_CHANNEL, text="restarted ❤️‍🩹")
+
         app = web.AppRunner(await web_server())
         await app.setup()
         bind_address = "0.0.0.0"
-        await web.TCPSite(app, bind_address, PORT).start()
+        await web.TCPSite(app, bind_address, PORT).start()       
 
+        await restart_index(self)
+    
     async def stop(self, *args):
         await super().stop()
         logging.info("Bot stopped. Bye.")
