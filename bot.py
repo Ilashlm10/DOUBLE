@@ -47,7 +47,7 @@ class Bot(Client):
                 f.write(f"REQ_CHANNEL={req}\n")
             logging.info("Loading REQ_CHANNEL from database...")
             os.execl(sys.executable, sys.executable, "bot.py")
-            return        )
+            return        
         me = await self.get_me()
         temp.ME = me.id
         temp.U_NAME = me.username
