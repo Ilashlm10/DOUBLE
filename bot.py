@@ -12,7 +12,7 @@ from pyrogram.raw.all import layer
 from database.ia_filterdb import Media2, Media3, Media4, Media5
 from database.users_chats_db import db
 from database.join_reqs import JoinReqs
-from info import SESSION, API_ID, API_HASH, BOT_TOKEN, LOG_STR
+from info import SESSION, API_ID, API_HASH, BOT_TOKEN, LOG_STR, REQ_CHANNEL
 from utils import temp
 from datetime import date, datetime 
 import pytz
