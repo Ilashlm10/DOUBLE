@@ -313,7 +313,8 @@ async def get_bad_files(query, file_type=None, filter=False):
     total_results_media2 = await Media3.count_documents(filter)
     total_results_media3 = await Media4.count_documents(filter)
     total_results_media4 = await Media5.count_documents(filter)
-    total_results = total_results_media1 + total_results_media2 + total_results_media3 + total_results_media4
+    total_results_media5 = await Media6.count_documents(filter)
+    total_results = total_results_media1 + total_results_media2 + total_results_media3 + total_results_media4 + total_results_media5
 
     cursor_media1 = Media2.find(filter)
     cursor_media1.sort('$natural', -1)
@@ -331,7 +332,11 @@ async def get_bad_files(query, file_type=None, filter=False):
     cursor_media4.sort('$natural', -1)
     files_media4 = await cursor_media4.to_list(length=total_results_media4)
     
-    return files_media1, files_media2, files_media3, files_media4, total_results
+    cursor_media5 = Media6.find(filter)
+    cursor_media5.sort('$natural', -1)
+    files_media5 = await cursor_media4.to_list(length=total_results_media4)
+    
+    return files_media1, files_media2, files_media3, files_media4, files_media5, total_results
     
 async def delete_files_below_threshold(db, threshold_size_mb: int = 40, batch_size: int = 20, chat_id: int = None, message_id: int = None):
     cursor_media1 = Media2.find({"file_size": {"$lt": threshold_size_mb * 1024 * 1024}}).limit(batch_size // 2)
