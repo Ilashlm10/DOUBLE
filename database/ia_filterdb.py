@@ -33,6 +33,10 @@ client5 = AsyncIOMotorClient(DATABASE_URI5)
 db5 = client5[DATABASE_NAME]
 instance5 = Instance.from_db(db5)
 
+client6 = AsyncIOMotorClient(DATABASE_URI5)
+db6 = client5[DATABASE_NAME]
+instance6 = Instance.from_db(db6)
+
 
 
 @instance2.register
