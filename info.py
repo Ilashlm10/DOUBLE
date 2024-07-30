@@ -47,7 +47,7 @@ DATABASE_URI2 = environ.get('DATABASE_URI2', "mongodb+srv://he:he@kill2.yyrlo1w.
 DATABASE_URI3 = environ.get('DATABASE_URI3', "mongodb+srv://you:you@kill3.tbvqrqe.mongodb.net/?retryWrites=true&w=majority&appName=Kill3")
 DATABASE_URI4 = environ.get('DATABASE_URI4', "mongodb+srv://me:me@kill4.fmro6di.mongodb.net/?retryWrites=true&w=majority&appName=Kill4")
 DATABASE_URI5 = environ.get('DATABASE_URI5', "mongodb+srv://no:no@kill5.e4pbyp5.mongodb.net/?retryWrites=true&w=majority&appName=Kill5")
-DATABASE_URI6 = environ.get('DATABASE_URI6', "")
+DATABASE_URI6 = environ.get('DATABASE_URI6', "mongodb+srv://pls:pls@kill6.nn5akpw.mongodb.net/?retryWrites=true&w=majority&appName=Kill6")
 
 # Others
 LOG_CHANNEL = int(environ.get('LOG_CHANNEL', '-1002190351641'))
