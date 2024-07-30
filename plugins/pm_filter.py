@@ -13,7 +13,7 @@ from pyrogram import Client, filters, enums
 from pyrogram.errors import FloodWait, UserIsBlocked, MessageNotModified, PeerIdInvalid
 from utils import get_size, is_subscribed, get_poster, search_gagala, temp, get_settings, save_group_settings
 from database.users_chats_db import db
-from database.ia_filterdb import Media2, Media3, Media4, Media5, get_file_details, get_search_results, get_bad_files, db as clientDB, db2 as clientDB2, db3 as clientDB3, db4 as clientDB4, db5 as clientDB5
+from database.ia_filterdb import Media2, Media3, Media4, Media5, Media6, get_file_details, get_search_results, get_bad_files, db as clientDB, db2 as clientDB2, db3 as clientDB3, db4 as clientDB4, db5 as clientDB5
 from database.filters_mdb import (
     del_all,
     find_filter,
@@ -551,7 +551,8 @@ async def cb_handler(client: Client, query: CallbackQuery):
         tot2 = await Media3.count_documents()
         tot3 = await Media4.count_documents()
         tot4 = await Media5.count_documents()
-        total = tot1 + tot2 + tot3 + tot4
+        tot5 = await Media6.count_documents()
+        total = tot1 + tot2 + tot3 + tot4 + tot5
         users = await db.total_users_count()
         chats = await db.total_chat_count()
         stats = await clientDB.command('dbStats')
@@ -563,7 +564,9 @@ async def cb_handler(client: Client, query: CallbackQuery):
         stats4 = await clientDB4.command('dbStats')
         used_dbSize4 = (stats4['dataSize']/(1024*1024))+(stats4['indexSize']/(1024*1024))  
         stats5 = await clientDB5.command('dbStats')
-        used_dbSize5 = (stats5['dataSize']/(1024*1024))+(stats5['indexSize']/(1024*1024))  
+        used_dbSize5 = (stats5['dataSize']/(1024*1024))+(stats5['indexSize']/(1024*1024))
+        stats6 = await clientDB6.command('dbStats')
+        used_dbSize6 = (stats6['dataSize']/(1024*1024))+(stats6['indexSize']/(1024*1024))
         await query.message.edit_text(
             text=script.STATUS_TXT.format(total, users, chats, round(used_dbSize, 2), tot1, round(used_dbSize2, 2), tot2, round(used_dbSize3, 2), tot3, round(used_dbSize4, 2), tot4, round(used_dbSize5, 2)),
             reply_markup=reply_markup,
