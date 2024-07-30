@@ -7,7 +7,7 @@ from pymongo.errors import DuplicateKeyError
 from umongo import Instance, Document, fields
 from motor.motor_asyncio import AsyncIOMotorClient
 from marshmallow.exceptions import ValidationError
-from info import DATABASE_URI2, DATABASE_NAME, DATABASE_URI, DATABASE_URI3, DATABASE_URI4, DATABASE_URI5, DATABASE_URI6, COLLECTION_NAME, USE_CAPTION_FILTER
+from info import DATABASE_URI2, DATABASE_NAME, DATABASE_URI, DATABASE_URI3, DATABASE_URI4, DATABASE_URI5, COLLECTION_NAME, USE_CAPTION_FILTER
 from typing import List, Tuple
 
 logger = logging.getLogger(__name__)
@@ -32,10 +32,6 @@ instance4 = Instance.from_db(db4)
 client5 = AsyncIOMotorClient(DATABASE_URI5)
 db5 = client5[DATABASE_NAME]
 instance5 = Instance.from_db(db5)
-
-client6 = AsyncIOMotorClient(DATABASE_URI6)
-db6 = client6[DATABASE_NAME]
-instance6 = Instance.from_db(db6)
 
 
 
@@ -90,19 +86,6 @@ class Media5(Document):
     class Metaa:
         indexes = ('$file_name', )
         collection_name = COLLECTION_NAME
-        
-@instance6.register
-class Media6(Document):
-    file_id = fields.StrField(attribute='_id')
-    file_ref = fields.StrField(allow_none=True)
-    file_name = fields.StrField(required=True)
-    file_size = fields.IntField(required=True)
-    file_type = fields.StrField(allow_none=True)
-    mime_type = fields.StrField(allow_none=True)
-    
-    class Metaa:
-        indexes = ('$file_name', )
-        collection_name = COLLECTION_NAME
 
 async def check_file(media):
     """Check if file is present in the database"""
@@ -114,7 +97,6 @@ async def check_file(media):
     existing_file2 = await Media3.collection.find_one({"_id": file_id})
     existing_file3 = await Media4.collection.find_one({"_id": file_id})
     existing_file4 = await Media5.collection.find_one({"_id": file_id})
-    existing_file5 = await Media6.collection.find_one({"_id": file_id})
     
     if existing_file1:
         pass
@@ -123,8 +105,6 @@ async def check_file(media):
     elif existing_file3:
         pass
     elif existing_file4:
-        pass
-    elif existing_file5:
         pass
     else:
         okda = "okda"
@@ -253,37 +233,6 @@ async def save_file5(media):
         else:
             logger.info(f'{getattr(media, "file_name", "NO_FILE")} is saved to database')
             return True, 1
-
-async def save_file6(media):
-    """Save file in database"""
-
-    # TODO: Find better way to get same file_id for same media to avoid duplicates
-    file_id, file_ref = unpack_new_file_id(media.file_id)
-    file_name = re.sub(r"(_|\+\s|\-|\.|\+|\[MM\]\s|\[MM\]_|\@TvSeriesBay|\@Cinema\sCompany|\@Cinema_Company|\@CC_|\@CC|\@MM_New|\@MM_Linkz|\@MOVIEHUNT|\@CL|\@FBM|\@CKMSERIES|www_DVDWap_Com_|MLM|\@WMR|\[CF\]\s|\[CF\]|\@IndianMoviez|\@tamil_mm|\@infotainmentmedia|\@trolldcompany|\@Rarefilms|\@yamandanmovies|\[YM\]|\@Mallu_Movies|\@YTSLT|\@DailyMovieZhunt|\@I_M_D_B|\@CC_All|\@PM_Old|Dvdworld|\[KMH\]|\@FBM_HW|\@Film_Kottaka|\@CC_X265|\@CelluloidCineClub|\@cinemaheist|\@telugu_moviez|\@CR_Rockers|\@CCineClub|KC_|\[KC\])", " ", str(media.file_name))
-    try:
-        file = Media6(
-            file_id=file_id,
-            file_ref=file_ref,
-            file_name=file_name,
-            file_size=media.file_size,
-            file_type=media.file_type,
-            mime_type=media.mime_type           
-        )
-    except ValidationError:
-        logger.exception('Error occurred while saving file in database')
-        return False, 2
-    else:
-        try:
-            await file.commit()
-        except DuplicateKeyError:      
-            logger.warning(
-                f'{getattr(media, "file_name", "NO_FILE")} is already saved in database'
-            )
-
-            return False, 0
-        else:
-            logger.info(f'{getattr(media, "file_name", "NO_FILE")} is saved to database')
-            return True, 1
             
 async def get_bad_files(query, file_type=None, filter=False):
     """For given query return (results, next_offset)"""
@@ -313,8 +262,7 @@ async def get_bad_files(query, file_type=None, filter=False):
     total_results_media2 = await Media3.count_documents(filter)
     total_results_media3 = await Media4.count_documents(filter)
     total_results_media4 = await Media5.count_documents(filter)
-    total_results_media5 = await Media6.count_documents(filter)
-    total_results = total_results_media1 + total_results_media2 + total_results_media3 + total_results_media4 + total_results_media5
+    total_results = total_results_media1 + total_results_media2 + total_results_media3 + total_results_media4
 
     cursor_media1 = Media2.find(filter)
     cursor_media1.sort('$natural', -1)
@@ -332,23 +280,17 @@ async def get_bad_files(query, file_type=None, filter=False):
     cursor_media4.sort('$natural', -1)
     files_media4 = await cursor_media4.to_list(length=total_results_media4)
     
-    cursor_media5 = Media6.find(filter)
-    cursor_media5.sort('$natural', -1)
-    files_media5 = await cursor_media4.to_list(length=total_results_media4)
-    
-    return files_media1, files_media2, files_media3, files_media4, files_media5, total_results
+    return files_media1, files_media2, files_media3, files_media4, total_results
     
 async def delete_files_below_threshold(db, threshold_size_mb: int = 40, batch_size: int = 20, chat_id: int = None, message_id: int = None):
     cursor_media1 = Media2.find({"file_size": {"$lt": threshold_size_mb * 1024 * 1024}}).limit(batch_size // 2)
     cursor_media2 = Media3.find({"file_size": {"$lt": threshold_size_mb * 1024 * 1024}}).limit(batch_size // 2)
     cursor_media3 = Media4.find({"file_size": {"$lt": threshold_size_mb * 1024 * 1024}}).limit(batch_size // 2)
     cursor_media4 = Media5.find({"file_size": {"$lt": threshold_size_mb * 1024 * 1024}}).limit(batch_size // 2)
-    cursor_media5 = Media6.find({"file_size": {"$lt": threshold_size_mb * 1024 * 1024}}).limit(batch_size // 2)
     deleted_count_media1 = 0
     deleted_count_media2 = 0
     deleted_count_media3 = 0
     deleted_count_media4 = 0
-    deleted_count_media5 = 0
     
     async for document in cursor_media1:
         try:
@@ -381,16 +323,8 @@ async def delete_files_below_threshold(db, threshold_size_mb: int = 40, batch_si
             print(f'Deleted file from Media: {document["file_name"]}')
         except Exception as e:
             print(f'Error deleting file from Media: {document["file_name"]}, {e}')
-            
-    async for document in cursor_media5:
-        try:
-            await Media6.collection.delete_one({"_id": document["file_id"]})
-            deleted_count_media5 += 1
-            print(f'Deleted file from Media: {document["file_name"]}')
-        except Exception as e:
-            print(f'Error deleting file from Media: {document["file_name"]}, {e}')
 
-    deleted_count = deleted_count_media1 + deleted_count_media2 + deleted_count_media3 + deleted_count_media4 + deleted_count_media5
+    deleted_count = deleted_count_media1 + deleted_count_media2 + deleted_count_media3 + deleted_count_media4
     return deleted_count
 
 async def get_search_results(query, file_type=None, max_results=8, offset=0, filter=False):
@@ -423,7 +357,6 @@ async def get_search_results(query, file_type=None, max_results=8, offset=0, fil
     cursor_media2 = Media3.find(filter).sort('$natural', -1)
     cursor_media3 = Media4.find(filter).sort('$natural', -1)
     cursor_media4 = Media5.find(filter).sort('$natural', -1)
-    cursor_media5 = Media6.find(filter).sort('$natural', -1)
 
     # Ensure offset is non-negative
     if offset < 0:
@@ -434,13 +367,12 @@ async def get_search_results(query, file_type=None, max_results=8, offset=0, fil
     files_media2 = await cursor_media2.to_list(length=35)
     files_media3 = await cursor_media3.to_list(length=35)
     files_media4 = await cursor_media4.to_list(length=35)
-    files_media5 = await cursor_media5.to_list(length=35)
 
-    total_results = len(files_media1) + len(files_media2) + len(files_media3) + len(files_media4) + len(files_media5)
+    total_results = len(files_media1) + len(files_media2) + len(files_media3) + len(files_media4)
     # Interleave files from both collections based on the offset
     interleaved_files = []
-    index_media1 = index_media2 = index_media3 = index_media4 = index_media5 = 0
-    while index_media1 < len(files_media1) or index_media2 < len(files_media2) or index_media3 < len(files_media3) or index_media4 < len(files_media4) or index_media5 < len(files_media5):
+    index_media1 = index_media2 = index_media3 = index_media4 = 0
+    while index_media1 < len(files_media1) or index_media2 < len(files_media2) or index_media3 < len(files_media3) or index_media4 < len(files_media4):
         if index_media1 < len(files_media1):
             interleaved_files.append(files_media1[index_media1])
             index_media1 += 1
@@ -453,9 +385,6 @@ async def get_search_results(query, file_type=None, max_results=8, offset=0, fil
         if index_media4 < len(files_media4):
             interleaved_files.append(files_media4[index_media4])
             index_media4 += 1
-        if index_media5 < len(files_media5):
-            interleaved_files.append(files_media5[index_media5])
-            index_media5 += 1
 
     # Slice the interleaved files based on the offset and max_results
     files = interleaved_files[offset:offset + max_results]
@@ -488,10 +417,6 @@ async def get_file_details(query):
     filedetails_media4 = await cursor_media4.to_list(length=1)
     if filedetails_media4:
         return filedetails_media4
-    cursor_media5 = Media6.find(filter)
-    filedetails_media5 = await cursor_media4.to_list(length=1)
-    if filedetails_media5:
-        return filedetails_media5
 
 def encode_file_id(s: bytes) -> str:
     r = b""
