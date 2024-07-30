@@ -49,6 +49,7 @@ DATABASE_URI5 = environ.get('DATABASE_URI5', "mongodb+srv://no:no@kill5.e4pbyp5.
 # Others
 LOG_CHANNEL = int(environ.get('LOG_CHANNEL', '-1002190351641'))
 SUPPORT_CHAT = environ.get('SUPPORT_CHAT', 'search_zone_support')
+BOT_START_TIME = time()
 P_TTI_SHOW_OFF = is_enabled((environ.get('P_TTI_SHOW_OFF', "True")), True)
 IMDB = is_enabled((environ.get('IMDB', "True")), True)
 SINGLE_BUTTON = is_enabled((environ.get('SINGLE_BUTTON', "True")), False)
