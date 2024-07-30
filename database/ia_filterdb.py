@@ -488,6 +488,10 @@ async def get_file_details(query):
     filedetails_media4 = await cursor_media4.to_list(length=1)
     if filedetails_media4:
         return filedetails_media4
+    cursor_media5 = Media6.find(filter)
+    filedetails_media5 = await cursor_media4.to_list(length=1)
+    if filedetails_media5:
+        return filedetails_media5
 
 def encode_file_id(s: bytes) -> str:
     r = b""
