@@ -114,6 +114,7 @@ async def check_file(media):
     existing_file2 = await Media3.collection.find_one({"_id": file_id})
     existing_file3 = await Media4.collection.find_one({"_id": file_id})
     existing_file4 = await Media5.collection.find_one({"_id": file_id})
+    existing_file5 = await Media6.collection.find_one({"_id": file_id})
     
     if existing_file1:
         pass
@@ -122,6 +123,8 @@ async def check_file(media):
     elif existing_file3:
         pass
     elif existing_file4:
+        pass
+    elif existing_file5:
         pass
     else:
         okda = "okda"
