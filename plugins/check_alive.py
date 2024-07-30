@@ -8,7 +8,7 @@ from info import BOT_START_TIME, ADMINS
 from utils import humanbytes  
 
 CMD = ["/", "."]
-STICKER_ID = os.environ.get("STICKER_ID", "CAACAgUAAxkBAAEJuhlktiRdqcdbhfqWwJOTwguHwG_TpwACagQAAu57sVc0PFm_NLNFLS8E CAACAgUAAxkBAAEJuhtktiSMuZs-afg9ntNNxQ_00kT_AgACpgUAAqUpqFfLn6Cv_5l3tS8E CAACAgUAAxkBAAEJuh1ktiSQrSuSKh_89pW8-1dJx6ZouAAC0QYAAvuzqFfw8Fv8XBQuXy8E CAACAgUAAxkBAAEJuh9ktiSTY54kUYxzeUwoY-NSZTH6tgAC1wQAAvUPqFfMiW39BW_QvS8E").split()
+STICKER_ID = os.environ.get("STICKER_ID", "CAACAgEAAxkBAALK_maoqR6YrZFa2XMmcqp_MRx962hIAAIgBAACz_3wRfKn0Aoz9J2kHgQ").split()
 
 
 @Client.on_message(filters.private & filters.command("adith") & filters.user(ADMINS))          
