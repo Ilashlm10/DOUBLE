@@ -131,6 +131,27 @@ async def index_files(bot, query):
             chat = int(chat)
         except:
             chat = chat
+        await index_files_to_db5(int(lst_msg_id), chat, msg, bot)
+    elif raju == 'accept6':
+        if lock.locked():
+            return await query.answer('Wait until previous process complete.', show_alert=True)
+        msg = query.message
+
+        await query.answer('Processing...⏳', show_alert=True)
+        if int(from_user) not in ADMINS:
+            await bot.send_message(int(from_user),
+                                   f'Your Submission for indexing {chat} has been accepted by our moderators and will be added soon.',
+                                   reply_to_message_id=int(lst_msg_id))
+        await msg.edit(
+            "Starting Indexing",
+            reply_markup=InlineKeyboardMarkup(
+                [[InlineKeyboardButton('Cancel', callback_data='index_cancel')]]
+            )
+        )
+        try:
+            chat = int(chat)
+        except:
+            chat = chat
         await index_files_to_db(int(lst_msg_id), chat, msg, bot)
 
 
