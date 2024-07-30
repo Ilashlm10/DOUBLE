@@ -34,7 +34,7 @@ db5 = client5[DATABASE_NAME]
 instance5 = Instance.from_db(db5)
 
 client6 = AsyncIOMotorClient(DATABASE_URI5)
-db6 = client5[DATABASE_NAME]
+db6 = client6[DATABASE_NAME]
 instance6 = Instance.from_db(db6)
 
 
@@ -92,7 +92,7 @@ class Media5(Document):
         collection_name = COLLECTION_NAME
         
 @instance6.register
-class Media5(Document):
+class Media6(Document):
     file_id = fields.StrField(attribute='_id')
     file_ref = fields.StrField(allow_none=True)
     file_name = fields.StrField(required=True)
