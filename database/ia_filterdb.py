@@ -382,7 +382,7 @@ async def delete_files_below_threshold(db, threshold_size_mb: int = 40, batch_si
         except Exception as e:
             print(f'Error deleting file from Media: {document["file_name"]}, {e}')
             
-     async for document in cursor_media5:
+    async for document in cursor_media5:
         try:
             await Media6.collection.delete_one({"_id": document["file_id"]})
             deleted_count_media5 += 1
