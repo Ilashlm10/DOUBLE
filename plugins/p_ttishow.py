@@ -163,14 +163,8 @@ async def get_ststs(bot, message):
         stats5 = await clientDB5.command('dbStats')
         used_dbSize5 = (stats5['dataSize']/(1024*1024))+(stats5['indexSize']/(1024*1024)) 
         hj = await hj.edit(script.STATUS_TXT.format(total, users, chats, round(used_dbSize, 2), tot1, round(used_dbSize2, 2), tot2, round(used_dbSize3, 2), tot3, round(used_dbSize4, 2), tot4, round(used_dbSize5, 2)))
-        await asyncio.sleep(20)
-        await hj.delete()
-        await message.delete()
     else:
         k = await message.reply_text("<b>Sᴏʀʀʏ ᴛʜɪꜱ ᴄᴏᴍᴍᴀɴᴅ ᴏɴʟʏ ᴀᴅᴍɪɴꜱ 👀</b>")        
-        await asyncio.sleep(10)
-        await k.delete()
-        await message.delete()
     
 # a function for trespassing into others groups, Inspired by a Vazha
 # Not to be used , But Just to showcase his vazhatharam.
