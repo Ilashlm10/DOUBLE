@@ -343,10 +343,12 @@ async def delete_files_below_threshold(db, threshold_size_mb: int = 40, batch_si
     cursor_media2 = Media3.find({"file_size": {"$lt": threshold_size_mb * 1024 * 1024}}).limit(batch_size // 2)
     cursor_media3 = Media4.find({"file_size": {"$lt": threshold_size_mb * 1024 * 1024}}).limit(batch_size // 2)
     cursor_media4 = Media5.find({"file_size": {"$lt": threshold_size_mb * 1024 * 1024}}).limit(batch_size // 2)
+    cursor_media5 = Media6.find({"file_size": {"$lt": threshold_size_mb * 1024 * 1024}}).limit(batch_size // 2)
     deleted_count_media1 = 0
     deleted_count_media2 = 0
     deleted_count_media3 = 0
     deleted_count_media4 = 0
+    deleted_count_media5 = 0
     
     async for document in cursor_media1:
         try:
@@ -379,8 +381,16 @@ async def delete_files_below_threshold(db, threshold_size_mb: int = 40, batch_si
             print(f'Deleted file from Media: {document["file_name"]}')
         except Exception as e:
             print(f'Error deleting file from Media: {document["file_name"]}, {e}')
+            
+     async for document in cursor_media5:
+        try:
+            await Media6.collection.delete_one({"_id": document["file_id"]})
+            deleted_count_media5 += 1
+            print(f'Deleted file from Media: {document["file_name"]}')
+        except Exception as e:
+            print(f'Error deleting file from Media: {document["file_name"]}, {e}')
 
-    deleted_count = deleted_count_media1 + deleted_count_media2 + deleted_count_media3 + deleted_count_media4
+    deleted_count = deleted_count_media1 + deleted_count_media2 + deleted_count_media3 + deleted_count_media4 + deleted_count_media5
     return deleted_count
 
 async def get_search_results(query, file_type=None, max_results=8, offset=0, filter=False):
@@ -413,6 +423,7 @@ async def get_search_results(query, file_type=None, max_results=8, offset=0, fil
     cursor_media2 = Media3.find(filter).sort('$natural', -1)
     cursor_media3 = Media4.find(filter).sort('$natural', -1)
     cursor_media4 = Media5.find(filter).sort('$natural', -1)
+    cursor_media5 = Media6.find(filter).sort('$natural', -1)
 
     # Ensure offset is non-negative
     if offset < 0:
@@ -423,12 +434,13 @@ async def get_search_results(query, file_type=None, max_results=8, offset=0, fil
     files_media2 = await cursor_media2.to_list(length=35)
     files_media3 = await cursor_media3.to_list(length=35)
     files_media4 = await cursor_media4.to_list(length=35)
+    files_media5 = await cursor_media5.to_list(length=35)
 
-    total_results = len(files_media1) + len(files_media2) + len(files_media3) + len(files_media4)
+    total_results = len(files_media1) + len(files_media2) + len(files_media3) + len(files_media4) + len(files_media5)
     # Interleave files from both collections based on the offset
     interleaved_files = []
-    index_media1 = index_media2 = index_media3 = index_media4 = 0
-    while index_media1 < len(files_media1) or index_media2 < len(files_media2) or index_media3 < len(files_media3) or index_media4 < len(files_media4):
+    index_media1 = index_media2 = index_media3 = index_media4 = index_media5 = 0
+    while index_media1 < len(files_media1) or index_media2 < len(files_media2) or index_media3 < len(files_media3) or index_media4 < len(files_media4) or index_media5 < len(files_media5):
         if index_media1 < len(files_media1):
             interleaved_files.append(files_media1[index_media1])
             index_media1 += 1
@@ -441,6 +453,9 @@ async def get_search_results(query, file_type=None, max_results=8, offset=0, fil
         if index_media4 < len(files_media4):
             interleaved_files.append(files_media4[index_media4])
             index_media4 += 1
+        if index_media5 < len(files_media5):
+            interleaved_files.append(files_media5[index_media5])
+            index_media5 += 1
 
     # Slice the interleaved files based on the offset and max_results
     files = interleaved_files[offset:offset + max_results]
