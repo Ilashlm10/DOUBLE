@@ -691,7 +691,7 @@ async def auto_filter(client, msg, spoll=False):
     if settings["button"]:
         btn = [
             [
-                InlineKeyboardButton('ʜᴇʟᴘ', url=f"https://t.me/{temp.U_NAME}?start={pquery_{message.id}_{message.chat.id}")     
+                InlineKeyboardButton('ʜᴇʟᴘ', url=f"https://t.me/{temp.U_NAME}?start=pquery_message.id_message.chat.id")     
               ]
             ]
     if offset != "":
